@@ -23,10 +23,11 @@
                    :maxlength="fConfigs.dateFormat.length"
                    @click="showCalendar = !showCalendar">
         </div>
-
         <div class="vfc-main-container" v-show="showCalendar"
              ref="mainContainer"
              :class="{'vfc-modal': fConfigs.isModal && (fConfigs.isDatePicker || fConfigs.isDateRange), 'vfc-dark': fConfigs.isDark}">
+            <events-component v-if="fConfigs.withEvents"></events-component>
+
             <template v-if="showMonthPicker">
                 <div class="vfc-months-container">
                     <div class="vfc-navigation-buttons" v-if="true">
@@ -136,10 +137,11 @@
     import helpCalendar from '../assets/js/calendar'
     import {propsAndData} from "../mixins/propsAndData";
     import TimePicker from "./TimePicker";
+    import EventsComponent from "./EventsComponent";
 
     export default {
         name: "FunctionalCalendar",
-        components: {TimePicker},
+        components: {EventsComponent, TimePicker},
         mixins: [propsAndData],
         created() {
             this.setConfigs();

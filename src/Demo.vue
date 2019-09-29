@@ -2,8 +2,9 @@
     <div>
         <FunctionalCalendar class="demo-calendar"
                             ref="Calendar"
+                            :with-events="true"
                             :is-date-range="true"
-                            :is-dark="true"
+                            :is-dark="false"
                             :date-format="'dd/mm/yyyy'"
                             :is-multiple="true"
                             :calendars-count="1"
