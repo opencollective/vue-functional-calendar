@@ -7,57 +7,57 @@ export const propsAndData = {
         },
         sundayStart: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         placeholder: {
             type: [String, Boolean],
-            default: () => undefined
+            default: () => false
         },
         dateFormat: {
             type: String
         },
         isMultiple: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         isSeparately: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         isDatePicker: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         isMultipleDatePicker: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         isDateRange: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         withTimePicker: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         calendarsCount: {
             type: Number
         },
         isModal: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         isTypeable: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         changeMonthFunction: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         changeYearFunction: {
             type: Boolean,
-            default: () => undefined
+            default: () => false
         },
         changeYearStep: {
             type: Number,
@@ -65,7 +65,7 @@ export const propsAndData = {
         },
         applyStylesheet: {
             type: Boolean,
-            default: () => undefined
+            default: () => true
         },
         newCurrentDate: {
             type: Date
@@ -85,15 +85,7 @@ export const propsAndData = {
         },
         limits: {
             type: [Object, Boolean],
-            default: () => undefined
-        },
-        minSelDays: {
-            type: [Number, Boolean],
-            default: () => undefined
-        },
-        maxSelDays: {
-            type: [Number, Boolean],
-            default: () => undefined
+            default: () => false
         },
         dayNames: {
             type: Array,
@@ -101,26 +93,127 @@ export const propsAndData = {
         monthNames: {
             type: Array
         },
-        shortMonthNames: {
-            type: Array
-        },
-        showWeekNumbers: {
-            type: Boolean,
-            default: () => undefined
-        },
         value: {
             type: Object
         },
         transition: {
             type: Boolean,
-            default: () => undefined
+            default: () => true
         },
         hiddenElements: {
             type: Array
         },
         isAutoCloseable: {
             type: Boolean,
-            default: undefined,
+            default: false,
         },
         isDark: {
             type: Boolean,
+            default: false
+        },
+        withEvents: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            defaultDateFormat: {
+                date: false,
+                dateTime: false,
+                hour: '00',
+                minute: '00',
+            },
+            calendar: {
+                currentDate: new Date(),
+                selectedDate: false,
+                selectedDateTime: false,
+                selectedHour: '00',
+                selectedMinute: '00',
+                selectedDates: [],
+                dateRange: {
+                    start: {
+                        date: false,
+                        dateTime: false,
+                        hour: '00',
+                        minute: '00',
+                    },
+                    end: {
+                        date: false,
+                        dateTime: false,
+                        hour: '00',
+                        minute: '00',
+                    }
+                }
+            },
+            input: {
+                selectedDate: '',
+                dateRange: {
+                    start: {
+                        date: '',
+                        dateTime: '',
+                        hour: '',
+                        minute: ''
+                    },
+                    end: {
+                        date: '',
+                        dateTime: '',
+                        hour: '',
+                        minute: ''
+                    }
+                }
+            },
+            calendarsKey: 0,
+            transitionPrefix: 'left',
+            showCalendar: true,
+            showMonthPicker: false,
+            showYearPicker: false,
+            showTimePicker: false,
+            allowPreDate: true,
+            allowNextDate: true,
+            listCalendars: [],
+            fConfigs: {
+                sundayStart: false,
+                placeholder: false,
+                dateFormat: 'dd/mm/yyyy',
+
+                isDatePicker: false,
+                isMultipleDatePicker: false,
+                isDateRange: false,
+                withTimePicker: false,
+                isMultiple: false,
+                calendarsCount: 1,
+                isSeparately: false,
+
+                isModal: false,
+                isTypeable: false,
+
+                changeMonthFunction: false,
+                changeYearFunction: false,
+                changeYearStep: 12,
+
+                applyStylesheet: true,
+
+                markedDates: [],
+                markedDateRange: {
+                    start: false,
+                    end: false
+                },
+
+                limits: false,
+
+                disabledDates: [],
+                disabledDayNames: [],
+
+                dayNames: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+                monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+
+                transition: true,
+                hiddenElements: [],
+                isAutoCloseable: false,
+                isDark: false,
+                withEvents: false
+            }
+        }
+    }
+};
