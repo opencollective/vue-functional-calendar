@@ -23,48 +23,47 @@
                    :maxlength="fConfigs.dateFormat.length"
                    @click="showCalendar = !showCalendar">
         </div>
-
         <div class="vfc-main-container" v-show="showCalendar"
              ref="mainContainer"
              :class="{'vfc-modal': fConfigs.isModal && (fConfigs.isDatePicker || fConfigs.isDateRange), 'vfc-dark': fConfigs.isDark}">
-            <template v-if="showMonthPicker  || showYearPicker ">
-                <div class="vfc-months-container" ref="monthContainer">
-                    <div class="vfc-content">
-                        <div class="vfc-navigation-buttons">
-                            <div @click="PreYear">
-                                <div class="vfc-arrow-left"></div>
-                            </div>
-                            <h2 class="vfc-top-date">
-                                <span class="vfc-popover-caret"></span>
-                                {{ calendar.currentDate.getFullYear() }}
-                            </h2>
-                            <div @click="NextYear">
-                                <div class="vfc-arrow-right"></div>
-                            </div>
+            <events-component v-if="fConfigs.withEvents"></events-component>
+
+            <template v-if="showMonthPicker">
+                <div class="vfc-months-container">
+                    <div class="vfc-navigation-buttons" v-if="true">
+                        <div @click="PreYear">
+                            <div class="vfc-arrow-left"></div>
                         </div>
-                        <div class="vfc-months">
-                            <template v-if="showMonthPicker">
-                                <div class="vfc-item" v-for="(month,key) in fConfigs.shortMonthNames"
-                                     :key="key"
-                                     :class="{'vfc-selected': calendar.currentDate.getMonth()===key}"
-                                     @click="pickMonth(key)">
-                                    {{ month }}
-                                </div>
-                            </template>
-                            <template v-else-if="showYearPicker">
-                                <div class="vfc-item"
-                                     v-for="(year,key) in yearList"
-                                     :key="key"
-                                     :class="{'vfc-selected': year.selected}"
-                                     @click="pickYear(year.year)">
-                                    {{ year.year }}
-                                </div>
-                            </template>
+                        <h2 class="vfc-top-date"
+                            @click="openYearPicker"
+                            :class="{'vfc-underline': !showYearPicker && fConfigs.changeYearFunction}">{{
+                            calendar.currentDate.getFullYear() }}</h2>
+                        <div @click="NextYear">
+                            <div class="vfc-arrow-right"></div>
                         </div>
+                    </div>
+                    <div class="vfc-months">
+                        <template v-if="!showYearPicker">
+                            <div class="vfc-item" v-for="(month,key) in fConfigs.monthNames"
+                                 :key="key"
+                                 :class="{'vfc-selected': calendar.currentDate.getMonth()===key}"
+                                 @click="pickMonth(key)">
+                                {{ month }}
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="vfc-item"
+                                 v-for="(year,key) in yearList"
+                                 :key="key"
+                                 :class="{'vfc-selected': year.selected}"
+                                 @click="pickYear(year.year)">
+                                {{ year.year }}
+                            </div>
+                        </template>
                     </div>
                 </div>
             </template>
-            <div v-if="showTimePicker">
+            <div v-else-if="showTimePicker">
                 <time-picker></time-picker>
             </div>
             <template v-else>
@@ -90,25 +89,16 @@
                                     </div>
                                 </div>
                                 <h2 class="vfc-top-date"
-                                    v-if="checkHiddenElement('month')">
-                                    <a href="#" @click.prevent="openMonthPicker(key)"
-                                       :class="{'vfc-cursor-pointer vfc-underline':fConfigs.changeMonthFunction, 'vfc-underline-active':showMonthPicker}">
-                                        {{ calendarItem.month }}
-                                    </a>
-                                    <a href="#" @click.prevent="openYearPicker(key)"
-                                       :class="{'vfc-cursor-pointer vfc-underline':fConfigs.changeYearFunction,  'vfc-underline-active':showYearPicker}">
-                                        {{ calendarItem.year }}
-                                    </a>
+                                    v-if="checkHiddenElement('month')"
+                                    :class="{'vfc-cursor-pointer vfc-underline':changeMonthFunction}"
+                                    @click="openMonthPicker(key)">
+                                    {{ calendarItem.dateTop }}
                                 </h2>
                                 <section class="vfc-dayNames">
-                                    <span v-for="(dayName, key) in fConfigs.dayNames" :key="key">
-                                        <template v-if="fConfigs.showWeekNumbers">
-                                            {{ ++key }}.
-                                        </template>
-                                        <template v-if="checkHiddenElement('dayNames')">
-                                            {{ dayName }}
-                                        </template>
-                                    </span>
+                                <span v-for="(dayName, key) in fConfigs.dayNames" v-if="checkHiddenElement('dayNames')"
+                                      :key="key">
+                                    {{ dayName }}
+                                </span>
                                 </section>
                                 <transition-group
                                         tag='div'
@@ -147,10 +137,11 @@
     import helpCalendar from '../assets/js/calendar'
     import {propsAndData} from "../mixins/propsAndData";
     import TimePicker from "./TimePicker";
+    import EventsComponent from "./EventsComponent";
 
     export default {
         name: "FunctionalCalendar",
-        components: {TimePicker},
+        components: {EventsComponent, TimePicker},
         mixins: [propsAndData],
         created() {
             this.setConfigs();
@@ -164,19 +155,6 @@
                     }
                 });
             }
-
-
-            window.addEventListener('click', (e) => {
-                if (this.showMonthPicker || this.showYearPicker) {
-                    let element1 = this.$refs.calendars.querySelector('.vfc-calendars .vfc-top-date a:nth-child(1)');
-                    let element2 = this.$refs.calendars.querySelector('.vfc-calendars .vfc-top-date a:nth-child(2)');
-
-                    if (!this.$refs.monthContainer.contains(e.target) && !element1.contains(e.target) && !element2.contains(e.target)) {
-                        this.showMonthPicker = this.showYearPicker = false
-                    }
-                }
-            });
-
         },
         mounted() {
             // Reacts to external selected dates
@@ -325,8 +303,6 @@
                         key: i,
                         date: date,
                         dateTop: `${this.fConfigs.monthNames[date.getMonth()]} ${date.getFullYear()}`,
-                        month: this.fConfigs.monthNames[date.getMonth()],
-                        year: date.getFullYear(),
                         weeks: helpCalendar.getFinalizedWeeks(date.getMonth(), date.getFullYear())
                     };
 
@@ -346,8 +322,6 @@
                         key: calendar.key,
                         date: date,
                         dateTop: `${this.fConfigs.monthNames[date.getMonth()]} ${date.getFullYear()}`,
-                        month: this.fConfigs.monthNames[date.getMonth()],
-                        year: date.getFullYear(),
                         weeks: helpCalendar.getFinalizedWeeks(date.getMonth(), date.getFullYear())
                     });
 
@@ -369,6 +343,7 @@
                     });
                 }
 
+
                 if (typeof (vm.configs) !== "undefined") {
                     Object.keys(vm.fConfigs).map(function (objectKey) {
                         if (typeof (vm.configs[objectKey]) !== "undefined") {
@@ -378,13 +353,11 @@
                     });
                 } else {
                     Object.keys(vm.$props).map(function (objectKey) {
-                        if (typeof (vm.fConfigs[objectKey]) !== "undefined" &&
-                            typeof (vm.$props[objectKey]) !== "undefined") {
+                        if (typeof (vm.fConfigs[objectKey]) !== "undefined" && typeof (vm.$props[objectKey]) !== "undefined") {
                             vm.$set(vm.fConfigs, objectKey, vm.$props[objectKey]);
                         }
                     });
                 }
-
 
                 // Is Modal
                 if (vm.fConfigs.isModal) vm.showCalendar = false;
@@ -455,7 +428,6 @@
                                 hide: day.hide,
                                 isMouseToLeft: false,
                                 isMouseToRight: false,
-                                isHovered: false,
                                 isDateRangeStart: vm.checkDateRangeStart(helpCalendar.formatDate(date)),
                                 isDateRangeEnd: vm.checkDateRangeEnd(helpCalendar.formatDate(date)),
                                 hideLeftAndRightDays: day.hideLeftAndRightDays,
@@ -521,8 +493,8 @@
                         // Start Date not empty, chose date > start date
                     } else if (this.calendar.dateRange.end.date === false && (clickDate > startDate)) {
                         this.calendar.dateRange.end.date = item.date;
-                        // Start date not empty, chose date <= start date (also same date range select)
-                    } else if (this.calendar.dateRange.start.date !== false && (clickDate <= startDate)) {
+                        // Start date not empty, chose date < start date
+                    } else if (this.calendar.dateRange.start.date !== false && (clickDate < startDate)) {
                         this.calendar.dateRange.end.date = this.calendar.dateRange.start.date;
                         this.calendar.dateRange.start.date = item.date;
                     }
@@ -577,8 +549,6 @@
                         this.openTimePicker();
                     }
                 }
-
-                this.$emit('choseDay', item);
             },
             markChooseDays() {
                 let vm = this;
@@ -611,11 +581,6 @@
                                 if (endDate === day.date) {
                                     day.isMouseToRight = !!endDate;
                                     day.isMarked = true;
-                                }
-
-                                if (startDate && startDate === endDate) {
-                                    day.isMouseToLeft = false
-                                    day.isMouseToRight = false
                                 }
 
                                 if (startDate && endDate) {
@@ -661,8 +626,6 @@
 
                                 let item = week.days[i];
 
-                                this.listCalendars[e].weeks[f].days[i].isHovered = false;
-
                                 if (item.date !== this.calendar.dateRange.start.date && !this.fConfigs.markedDates.includes(item.date)) {
                                     this.listCalendars[e].weeks[f].days[i].isMarked = false;
                                 }
@@ -687,10 +650,6 @@
                                             (itemDate < startDate && itemDate > thisDate))
                                     ) {
                                         this.listCalendars[e].weeks[f].days[i].isMarked = true;
-                                    }
-
-                                    if (!this.calendar.dateRange.end.date && itemDate === thisDate) {
-                                        this.listCalendars[e].weeks[f].days[i].isHovered = true;
                                     }
                                 }
 
@@ -781,16 +740,12 @@
                 this.initCalendar();
             },
             openMonthPicker() {
-                if (this.fConfigs.changeMonthFunction) {
-                    this.showMonthPicker = !this.showMonthPicker;
-                    this.showYearPicker = false;
-                }
+                if (this.fConfigs.changeMonthFunction)
+                    this.showMonthPicker = true;
             },
             openYearPicker() {
-                if (this.fConfigs.changeYearFunction) {
-                    this.showYearPicker = !this.showYearPicker;
-                    this.showMonthPicker = false;
-                }
+                if (this.fConfigs.changeYearFunction)
+                    this.showYearPicker = true;
             },
             openTimePicker() {
                 this.showTimePicker = true;
@@ -804,7 +759,7 @@
             pickYear(year) {
                 this.showYearPicker = false;
                 let date = this.calendar.currentDate;
-                this.calendar.currentDate = new Date(year, date.getMonth() + 1, 0);
+                this.calendar.currentDate = new Date(year, date.getMonth(), 0);
                 this.initCalendar();
             },
             getClassNames(day) {
@@ -821,16 +776,8 @@
                     classes.push('vfc-cursor-not-allowed');
                 }
 
-                let date = helpCalendar.getDateFromFormat(day.date);
-                let today = new Date();
-                today.setHours(0, 0, 0, 0);
-
-
                 // Disabled dates
-                if (this.fConfigs.disabledDates.includes(day.date) ||
-                    (this.fConfigs.disabledDates.includes('beforeToday') && date.getTime() < today.getTime()) ||
-                    (this.fConfigs.disabledDates.includes('afterToday') && date.getTime() > today.getTime())
-                ) {
+                if (this.fConfigs.disabledDates.includes(day.date)) {
                     classes.push('vfc-disabled');
                     classes.push('vfc-cursor-not-allowed');
                 }
@@ -838,8 +785,9 @@
                 if (this.fConfigs.limits) {
                     let min = helpCalendar.getDateFromFormat(this.fConfigs.limits.min).getTime();
                     let max = helpCalendar.getDateFromFormat(this.fConfigs.limits.max).getTime();
+                    let date = helpCalendar.getDateFromFormat(day.date).getTime();
 
-                    if (date.getTime() < min || date.getTime() > max) {
+                    if (date < min || date > max) {
                         classes.push('vfc-disabled');
                         classes.push('vfc-cursor-not-allowed');
                     }
@@ -859,8 +807,6 @@
                     // Mark Date
                     if (day.isMarked) {
                         classes.push('vfc-marked');
-                    } else if (day.isHovered) {
-                        classes.push('vfc-hovered');
                     }
 
                     if (this.fConfigs.markedDates.includes(day.date)) {

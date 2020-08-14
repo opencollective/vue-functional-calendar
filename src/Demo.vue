@@ -1,38 +1,9 @@
 <template>
     <div>
-        <functional-calendar class="demo-calendar" :is-date-picker="true" :with-time-picker="true">
-
-        </functional-calendar>
         <FunctionalCalendar class="demo-calendar"
                             ref="Calendar"
-                            :hiddenElements="['']"
-                            :showWeekNumbers="true"
+                            :with-events="true"
                             :is-date-range="true"
-                            :min-sel-days="3"
-                            :is-dark="true"
-                            :date-format="'yyyy-mm-dd'"
-                            :is-multiple="true"
-                            :calendars-count="1"
-                            :with-time-picker="false"
-                            :change-month-function="true"
-                            :change-year-function="true"
-                            :marked-dates="markedDates"
-                            v-slot:default="props"
-                            :is-auto-closeable="true"
-                            :is-modal="false"
-                            :change-year-step="5"
-                            @choseDay="choseDay"
-        >
-            <span style="text-align: center">
-                {{ props.day.day }}
-                <span :class="{'green-point': props.day.day === 5, 'orange-point': props.day.day === 9, 'green-line': props.day.day === 11}"></span>
-            </span>
-        </FunctionalCalendar>
-
-        <FunctionalCalendar class="demo-calendar"
-                            ref="Calendar2"
-                            :is-date-range="true"
-                            :min-sel-days="3"
                             :is-dark="false"
                             :date-format="'dd/mm/yyyy'"
                             :is-multiple="true"
@@ -40,7 +11,7 @@
                             :with-time-picker="false"
                             :change-month-function="true"
                             :change-year-function="true"
-                            :disabled-dates="['beforeToday', '20/12/2019']"
+                            :disabled-dates="['10/10/2019']"
                             v-slot:default="props"
                             :is-auto-closeable="true"
                             :is-modal="false"
@@ -97,14 +68,6 @@
         data() {
             return {
                 calendarData: {},
-                markedDates: [
-                    "2019-12-6",
-                    "2019-12-9",
-                    "2019-12-10",
-                    "2019-12-11",
-                    "2019-12-12",
-                    "2020-1-1"
-                ],
                 calendarConfigs: {
                     isMultipleDatePicker: true,
                     dayNames: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
@@ -123,9 +86,6 @@
             },
             changedMonth(value) {
                 console.log(value);
-            },
-            choseDay(day) {
-                console.log(day);
             },
             preYear() {
                 this.$refs.calendar.ChooseDate('10/10/2020');

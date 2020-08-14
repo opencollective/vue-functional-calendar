@@ -39,7 +39,6 @@ input.vfc-single-input {
       background-color: $mirage
     }
   }
-
   .vfc-single-input {
     border-color: $astronaut;
     background-color: $mirage
@@ -61,97 +60,65 @@ input.vfc-single-input {
   }
 
   .vfc-months-container {
+    height: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
 
-    .vfc-content {
-      width: 45%;
-      position: absolute;
-      z-index: 1000;
-      background-color: $licorice;
-      border: 1px solid;
-      border-radius: 5px;
-      top: 55px;
-      color: $white;
-      padding: 5px 0;
+    .vfc-navigation-buttons {
+      .vfc-top-date {
+        text-align: center;
+        font-size: 21px;
+        font-weight: bold;
+        margin: 0;
 
-      .vfc-navigation-buttons {
         div {
-          margin: 10px 10px;
-
-          .vfc-arrow-left, .vfc-arrow-right {
-            border-color: $white;
-            width: 8px;
-            height: 8px;
-            cursor: pointer;
-
-            &:hover {
-              border-color: $pictionBlue;
-            }
-          }
+          margin: 20px 20px;
         }
 
-        .vfc-top-date {
-          text-align: center;
-          font-size: 18px;
-          font-weight: bold;
-          margin: 0;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
 
-          .vfc-popover-caret {
-            content: "";
-            position: absolute;
-            display: block;
-            width: 12px;
-            height: 12px;
-            border-top: inherit;
-            border-left: inherit;
-            background: inherit;
-            z-index: -1;
-            background-color: $licorice;
-            transform: translateY(-40%) rotate(45deg);
-            top: 0;
-          }
-
-
-          &.vfc-underline {
-            cursor: pointer;
-            text-decoration: underline dotted $royalblue;
-          }
+        &.vfc-underline {
+          cursor: pointer;
+          text-decoration: underline dotted #66b3cc;
         }
       }
+    }
 
-      .vfc-months {
-        flex: 1 1 75%;
-        padding: 0;
+    .vfc-months {
+      flex: 1 1 75%;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      div.vfc-item {
+        border-top: 1px solid #d4d4d4;
+        flex: 1;
+        flex-basis: 30%;
+        //height: 69px;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        outline-style: none;
 
-        div.vfc-item {
-          flex: 1;
-          flex-basis: 30%;
-          margin: 3px;
-          display: flex;
-          justify-content: center;
-          flex-direction: column;
-          text-align: center;
-          outline-style: none;
-          border-radius: 5px;
+        &:hover {
+          background-color: rgba(113, 113, 113, 0.3);
+          transition: background-color 0.2s ease-in-out;
+          cursor: pointer;
+        }
 
-          &:hover {
-            background-color: rgba(113, 113, 113, 0.3);
-            transition: background-color 0.2s ease-in-out;
-            cursor: pointer;
+        &.vfc-selected {
+          background-color: #66b3cc;
+          color: #fff;
+          text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+          font-weight: 700;
+
+          &:nth-last-child(3) {
+            border-radius: 0 0 0 5px;
           }
 
-          &.vfc-selected {
-            background-color: $pictionBlue;
-            color: $white;
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+          &:last-child {
+            border-radius: 0 0 5px;
           }
         }
       }
@@ -422,23 +389,13 @@ input.vfc-single-input {
                 font-size: 18px;
                 font-weight: normal;
 
-                a {
-                  text-decoration: unset;
-                  margin: 0 2px;
-                  color: $black;
+                &.vfc-cursor-pointer {
+                  cursor: pointer;
+                }
 
-                  &.vfc-cursor-pointer {
-                    cursor: pointer;
-                  }
-
-                  &.vfc-underline {
-                    cursor: pointer;
-                    text-decoration: underline $royalblue;
-
-                    &.vfc-underline-active {
-                      text-decoration-color: $black;
-                    }
-                  }
+                &.vfc-underline {
+                  cursor: pointer;
+                  text-decoration: underline #66b3cc;
                 }
               }
             }
@@ -577,7 +534,7 @@ input.vfc-single-input {
                       align-items: center;
                     }
 
-                    &.vfc-hover:hover, &.vfc-hovered {
+                    &.vfc-hover:hover {
                       background-color: $lightgreyHover;
                       z-index: 100;
                     }
@@ -656,6 +613,10 @@ input.vfc-single-input {
   &.vfc-dark {
     background-color: $mirage;
 
+    .vfc-top-date {
+      color: $white
+    }
+
     .vfc-navigation-buttons {
       div {
         .vfc-arrow-right, .vfc-arrow-left {
@@ -675,16 +636,8 @@ input.vfc-single-input {
           &.vfc-content {
             h2 {
               &.vfc-top-date {
-                a {
-                  color: $white;
-
-                  &.vfc-underline {
-                    text-decoration: underline $pictionBlue;
-
-                    &.vfc-underline-active {
-                      text-decoration-color: $white;
-                    }
-                  }
+                &.vfc-underline {
+                  text-decoration: underline $pictionBlue;
                 }
               }
             }
@@ -743,8 +696,7 @@ input.vfc-single-input {
                       color: $black;
                     }
 
-                    &.vfc-hover:hover, &.vfc-hovered {
-                      z-index: 1;
+                    &.vfc-hover:hover {
                       background-color: rgba(76, 76, 76, 0.3);
                     }
                   }
@@ -756,41 +708,27 @@ input.vfc-single-input {
       }
     }
 
-
     .vfc-months-container {
-      .vfc-content {
-        background-color: $white;
-
-        .vfc-navigation-buttons {
-          .vfc-arrow-left, .vfc-arrow-right {
-            border-color: $black;
-          }
-
-          .vfc-top-date {
-            color: $black;
-
-            .vfc-popover-caret {
-              background-color: $white;
-            }
-
-            &.vfc-underline {
-              text-decoration: underline dotted $royalblue;
-            }
+      .vfc-navigation-buttons {
+        .vfc-top-date {
+          &.vfc-underline {
+            text-decoration: underline dotted #66b3cc;
           }
         }
+      }
 
-        .vfc-months {
-          div.vfc-item {
-            color: $black;
+      .vfc-months {
+        div.vfc-item {
+          color: $white;
+          border-top: 1px solid #d4d4d4;
 
-            &:hover {
-              background-color: rgba(113, 113, 113, 0.3);
-            }
+          &:hover {
+            background-color: rgba(113, 113, 113, 0.3);
+          }
 
-            &.vfc-selected {
-              background-color: $pictionBlue;
-              color: $white;
-            }
+          &.vfc-selected {
+            background-color: $pictionBlue;
+            color: #fff;
           }
         }
       }

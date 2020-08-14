@@ -2,14 +2,14 @@
 
 [![Build Status](https://travis-ci.org/ManukMinasyan/vue-functional-calendar.svg?branch=master)](https://travis-ci.org/ManukMinasyan/vue-functional-calendar)
 [![Version](https://img.shields.io/npm/v/vue-functional-calendar.svg)](https://www.npmjs.com/package/vue-functional-calendar)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Downloads](https://img.shields.io/npm/dt/vue-functional-calendar.svg)](https://www.npmjs.com/package/vue-functional-calendar)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Downloads](https://img.shields.io/npm/dm/vue-functional-calendar.svg)](https://www.npmjs.com/package/vue-functional-calendar)
 ![gzip size](https://img.shields.io/badge/gzip%20size-5.73%20kB-44cc11.svg)
 ___
 
 ## Demo
 
-Demo: <a href="https://y3jnxov469.codesandbox.io/" target="_blank">https://y3jnxov469.codesandbox.io/</a>
+Demo: https://y3jnxov469.codesandbox.io/
 
 [![Edit VueJS Functional Calendar Component](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/980jov4m4p?fontsize=14&hidenavigation=1)
 
@@ -47,7 +47,7 @@ ___
 // Introduced in vue file
 import FunctionalCalendar from 'vue-functional-calendar';
 Vue.use(FunctionalCalendar, {
-    dayNames: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+    dayNames: ['Moa', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 });
 ````
 
@@ -150,11 +150,9 @@ ___
 | markedDates                   | Array         | []       | ['10/12/2018', '12/12/2018'] OR [{date: '10/1/2019', class: 'marked-class'},{date: '12/1/2019', class: 'marked-class-2'}]        | Marked dates array                   |
 | markedDateRange                   | Object         | {start: false, end: false}       | {start: '12/12/2018', end: '20/12/2018'}        | Marked date with range                   |
 | disabledDayNames                   | Array         | []     | ['Su','We']        | Disabled Days Of Week                   |
-| disabledDates                   | Array         | []     | ['24/12/2020','27/12/2020']   OR ['beforeToday', 'afterToday', '24/12/2020','27/12/2020']     | Disabled Dates                   |
+| disabledDates                   | Array         | []     | ['24/12/2018','27/12/2018']        | Disabled Dates                   |
 | dayNames                   | Array         | ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']       | ['Monday', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Sunday']        | Week Day Names                   |
 | monthNames                   | Array         | ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]       | ["Jan.", "Feb.", "Mar", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."]        | Month names                   |
-| shortMonthNames                   | Array         | ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] | ["Jan.", "Feb.", "Mar", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."]        | Short month names                   |
-| showWeekNumbers                    | Boolean         | false      | true | Display week numbers.               |
 | transition                    | Boolean         | true      | false | Calendar animations               |
 | hiddenElements                   | Array         | []       | ['dayNames', 'navigationArrows', 'leftAndRightDays', 'month']        | Hide calendar elements                       |
 | isDark                   | Boolean         | false       | true        | Dark theme                    |
@@ -164,7 +162,6 @@ ___
 
 | Event          | Output       | Description                                                        |
 | :------------- | :------------- | :-----------------------------------------------------------: 
-| choseDay |Object | Get clicked day object
 | changedMonth |Date | Month page has been changed
 | changedYear |Date | Year page has been changed
 | selectedDaysCount |Number | Get number of days between date range dates
